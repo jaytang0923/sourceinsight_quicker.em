@@ -3503,6 +3503,9 @@ macro FuncHeadCommentCN(hbuf, ln, szFunc, szMyName,newFunc)
 macro FuncHeadCommentEN(hbuf, ln, szFunc, szMyName,newFunc)
 {
 	var lnend
+	var lnreturn
+	var lnparastart
+	var lndesc
     iIns = 0
     if(newFunc != 1)
     {
@@ -3551,6 +3554,9 @@ macro FuncHeadCommentEN(hbuf, ln, szFunc, szMyName,newFunc)
     InsBufLine(hbuf, ln+1, " * \@fn       @szLine@")
     InsBufLine(hbuf, ln+2, " * \@brief    ")
     InsBufLine(hbuf, ln+3, " * ")
+    lndesc = 2   		//brfef
+    lnparastart = 3   	// 4 -1
+    
     oldln  = ln 
     szIns = " * \@param[in]          "
     if(newFunc != 1)
@@ -3567,7 +3573,7 @@ macro FuncHeadCommentEN(hbuf, ln, szFunc, szMyName,newFunc)
             szTmp = cat(szTmp,szBlank)
             ln = ln + 1
             szTmp = cat(szIns,szTmp)
-            InsBufLine(hbuf, ln+3, "@szTmp@")
+            InsBufLine(hbuf, ln+lnparastart, "@szTmp@")
             iIns = 1
             szIns = " * \@param[in]        "
             i = i + 1
@@ -3577,14 +3583,13 @@ macro FuncHeadCommentEN(hbuf, ln, szFunc, szMyName,newFunc)
     if(iIns == 0)
     {       
             ln = ln + 1
-            InsBufLine(hbuf, ln+3, " * \@param[in]           None")
+            InsBufLine(hbuf, ln+lnparastart, " * \@param[in]           None")
     }
-    InsBufLine(hbuf, ln+4, " * ")
-    InsBufLine(hbuf, ln+5, " * \@return         @szRet@")
-    InsBufLine(hbuf, ln+6, " *  ")
-    InsbufLIne(hbuf, ln+7, " */")
-
-    lnend = 8
+    
+    InsBufLine(hbuf, ln+4, " * \@return         @szRet@")
+    InsbufLIne(hbuf, ln+5, " */")
+    lnreturn = 4
+    lnend = 6
     
     SysTime = GetSysTime(1);
     sz1=SysTime.Year
@@ -3611,7 +3616,7 @@ macro FuncHeadCommentEN(hbuf, ln, szFunc, szMyName,newFunc)
     {
         InsBufLine(hbuf, ln+lnend, "VOS_UINT32  @szFunc@( # )")
         InsBufLine(hbuf, ln+lnend+1, "{");
-        InsBufLine(hbuf, ln+lnend+2, "    #");
+        InsBufLine(hbuf, ln+lnend+2, "     ");
         InsBufLine(hbuf, ln+lnend+3, "}");
         SearchForward()
     }        
@@ -3624,17 +3629,17 @@ macro FuncHeadCommentEN(hbuf, ln, szFunc, szMyName,newFunc)
     sel.lnFirst = ln + lnend
     sel.lnLast = ln + lnend       
     szContent = Ask("Description")
-    DelBufLine(hbuf,oldln + 2)
+    DelBufLine(hbuf,oldln + lndesc)
     setWndSel(hwnd,sel)
-    newln = CommentContent(hbuf,oldln + 2," * \@brief    ",szContent,0) - 2
+    newln = CommentContent(hbuf,oldln + lndesc," * \@brief    ",szContent,0) - lndesc
     ln = ln + newln - oldln
     if ((newFunc == 1) && (strlen(szFunc)>0))
     {
         //提示输入函数返回值名
-        szRet = Ask("Please input return value type")
+        szRet = Ask("Return type")
         if(strlen(szRet) > 0)
         {
-            PutBufLine(hbuf, ln+5, " * \@return        : @szRet@")            
+            PutBufLine(hbuf, ln+lnreturn, " * \@return        : @szRet@")            
             PutBufLine(hbuf, ln+lnend, "@szRet@ @szFunc@( # )")
             SetbufIns(hbuf,ln+lnend,strlen(szRet)+strlen(szFunc) + 3)
         }
@@ -3669,7 +3674,7 @@ macro FuncHeadCommentEN(hbuf, ln, szFunc, szMyName,newFunc)
                 oldsel.lnLast = ln + lnend        
             }
             SetBufSelText(hbuf,szParam)
-            szIns = "                "
+            szIns = " * \@param[in]          "
             szFuncDef = ", "
             oldsel.lnFirst = ln + (lnend+2)
             oldsel.lnLast = ln + (lnend+2)
