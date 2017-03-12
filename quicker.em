@@ -3551,7 +3551,10 @@ macro FuncHeadCommentEN(hbuf, ln, szFunc, szMyName,newFunc)
         szLine = ""
     }
     InsBufLine(hbuf, ln, "/**")
-    InsBufLine(hbuf, ln+1, " * \@fn       @szLine@")
+    if(newFunc != 1)
+    	InsBufLine(hbuf, ln+1, " * \@fn       @szLine@")
+    else
+    	InsBufLine(hbuf, ln+1, " * ")
     InsBufLine(hbuf, ln+2, " * \@brief    ")
     InsBufLine(hbuf, ln+3, " * ")
     lndesc = 2   		//brfef
