@@ -3550,6 +3550,7 @@ macro FuncHeadCommentEN(hbuf, ln, szFunc, szMyName,newFunc)
     InsBufLine(hbuf, ln, "/**")
     InsBufLine(hbuf, ln+1, " * \@fn       @szLine@")
     InsBufLine(hbuf, ln+2, " * \@brief    ")
+    InsBufLine(hbuf, ln+3, " * ")
     oldln  = ln 
     szIns = " * \@param[in]          "
     if(newFunc != 1)
@@ -3566,7 +3567,7 @@ macro FuncHeadCommentEN(hbuf, ln, szFunc, szMyName,newFunc)
             szTmp = cat(szTmp,szBlank)
             ln = ln + 1
             szTmp = cat(szIns,szTmp)
-            InsBufLine(hbuf, ln+2, "@szTmp@")
+            InsBufLine(hbuf, ln+3, "@szTmp@")
             iIns = 1
             szIns = " * \@param[in]        "
             i = i + 1
@@ -3576,14 +3577,14 @@ macro FuncHeadCommentEN(hbuf, ln, szFunc, szMyName,newFunc)
     if(iIns == 0)
     {       
             ln = ln + 1
-            InsBufLine(hbuf, ln+2, " * \@param[in]           None")
+            InsBufLine(hbuf, ln+3, " * \@param[in]           None")
     }
-    InsBufLine(hbuf, ln+3, " * ")
-    InsBufLine(hbuf, ln+4, " * \@return         @szRet@")
-    InsBufLine(hbuf, ln+5, " *  ")
-    InsbufLIne(hbuf, ln+6, " */")
+    InsBufLine(hbuf, ln+4, " * ")
+    InsBufLine(hbuf, ln+5, " * \@return         @szRet@")
+    InsBufLine(hbuf, ln+6, " *  ")
+    InsbufLIne(hbuf, ln+7, " */")
 
-    lnend = 7
+    lnend = 8
     
     SysTime = GetSysTime(1);
     sz1=SysTime.Year
@@ -3633,9 +3634,9 @@ macro FuncHeadCommentEN(hbuf, ln, szFunc, szMyName,newFunc)
         szRet = Ask("Please input return value type")
         if(strlen(szRet) > 0)
         {
-            PutBufLine(hbuf, ln+4, " * \@return        : @szRet@")            
+            PutBufLine(hbuf, ln+5, " * \@return        : @szRet@")            
             PutBufLine(hbuf, ln+lnend, "@szRet@ @szFunc@( # )")
-            SetbufIns(hbuf,ln+lnend,strlen(szRet)+strlen(szFunc) + 3
+            SetbufIns(hbuf,ln+lnend,strlen(szRet)+strlen(szFunc) + 3)
         }
         szFuncDef = ""
         isFirstParam = 1
@@ -3657,13 +3658,13 @@ macro FuncHeadCommentEN(hbuf, ln, szFunc, szMyName,newFunc)
             oldsel = sel
             if(isFirstParam == 1)
             {
-                PutBufLine(hbuf, ln+2, "@szTmp@")
+                PutBufLine(hbuf, ln+3, "@szTmp@")
                 isFirstParam  = 0
             }
             else
             {
                 ln = ln + 1
-                InsBufLine(hbuf, ln+2, "@szTmp@")
+                InsBufLine(hbuf, ln+3, "@szTmp@")
                 oldsel.lnFirst = ln + lnend
                 oldsel.lnLast = ln + lnend        
             }
