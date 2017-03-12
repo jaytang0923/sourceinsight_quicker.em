@@ -3502,6 +3502,7 @@ macro FuncHeadCommentCN(hbuf, ln, szFunc, szMyName,newFunc)
 *****************************************************************************/
 macro FuncHeadCommentEN(hbuf, ln, szFunc, szMyName,newFunc)
 {
+	var lnend
     iIns = 0
     if(newFunc != 1)
     {
@@ -3547,8 +3548,8 @@ macro FuncHeadCommentEN(hbuf, ln, szFunc, szMyName,newFunc)
         szLine = ""
     }
     InsBufLine(hbuf, ln, "/**")
-    InsBufLine(hbuf, ln+1, " * \@fn       @szFunc@")
-    InsBufLine(hbuf, ln+2, " *")
+    InsBufLine(hbuf, ln+1, " * \@fn       @szLine@")
+    InsBufLine(hbuf, ln+2, " * \@brief    ")
     oldln  = ln 
     szIns = " * \@param[in]          "
     if(newFunc != 1)
@@ -3577,11 +3578,12 @@ macro FuncHeadCommentEN(hbuf, ln, szFunc, szMyName,newFunc)
             ln = ln + 1
             InsBufLine(hbuf, ln+2, " * \@param[in]           None")
     }
-    InsBufLine(hbuf, ln+3, " * \@param[out]         None")
+    InsBufLine(hbuf, ln+3, " * ")
     InsBufLine(hbuf, ln+4, " * \@return         @szRet@")
-    InsBufLine(hbuf, ln+5, " * ")
-    InsBufLine(hbuf, ln+6, " * ")
-    InsbufLIne(hbuf, ln+7, " */");
+    InsBufLine(hbuf, ln+5, " *  ")
+    InsbufLIne(hbuf, ln+6, " */")
+
+    lnend = 7
     
     SysTime = GetSysTime(1);
     sz1=SysTime.Year
@@ -3604,19 +3606,12 @@ macro FuncHeadCommentEN(hbuf, ln, szFunc, szMyName,newFunc)
    		szDay = sz3
    	}
 
-    //InsBufLine(hbuf, ln + 6, " * Record")
-    //InsBufLine(hbuf, ln + 7, " * 1.Date        : @sz1@@szMonth@@szDay@")
-    //InsBufLine(hbuf, ln + 8, " *   Author      : @szMyName@")
-    //InsBufLine(hbuf, ln + 9, " *   Modification: Created function")
-    //InsBufLine(hbuf, ln + 10, "")    
-    //InsBufLine(hbuf, ln + 11, "*****************************************************************************/")
-
     if ((newFunc == 1) && (strlen(szFunc)>0))
     {
-        InsBufLine(hbuf, ln+12, "VOS_UINT32  @szFunc@( # )")
-        InsBufLine(hbuf, ln+13, "{");
-        InsBufLine(hbuf, ln+14, "    #");
-        InsBufLine(hbuf, ln+15, "}");
+        InsBufLine(hbuf, ln+lnend, "VOS_UINT32  @szFunc@( # )")
+        InsBufLine(hbuf, ln+lnend+1, "{");
+        InsBufLine(hbuf, ln+lnend+2, "    #");
+        InsBufLine(hbuf, ln+lnend+3, "}");
         SearchForward()
     }        
     hwnd = GetCurrentWnd()
@@ -3625,12 +3620,12 @@ macro FuncHeadCommentEN(hbuf, ln, szFunc, szMyName,newFunc)
     sel = GetWndSel(hwnd)
     sel.ichFirst = 0
     sel.ichLim = sel.ichFirst
-    sel.lnFirst = ln + 12
-    sel.lnLast = ln + 12       
+    sel.lnFirst = ln + lnend
+    sel.lnLast = ln + lnend       
     szContent = Ask("Description")
     DelBufLine(hbuf,oldln + 2)
     setWndSel(hwnd,sel)
-    newln = CommentContent(hbuf,oldln + 6," * \@brief    ",szContent,0) - 6
+    newln = CommentContent(hbuf,oldln + 2," * \@brief    ",szContent,0) - 2
     ln = ln + newln - oldln
     if ((newFunc == 1) && (strlen(szFunc)>0))
     {
@@ -3639,8 +3634,8 @@ macro FuncHeadCommentEN(hbuf, ln, szFunc, szMyName,newFunc)
         if(strlen(szRet) > 0)
         {
             PutBufLine(hbuf, ln+4, " * \@return        : @szRet@")            
-            PutBufLine(hbuf, ln+12, "@szRet@ @szFunc@( # )")
-            SetbufIns(hbuf,ln+12,strlen(szRet)+strlen(szFunc) + 3
+            PutBufLine(hbuf, ln+lnend, "@szRet@ @szFunc@( # )")
+            SetbufIns(hbuf,ln+lnend,strlen(szRet)+strlen(szFunc) + 3
         }
         szFuncDef = ""
         isFirstParam = 1
@@ -3654,8 +3649,8 @@ macro FuncHeadCommentEN(hbuf, ln, szFunc, szMyName,newFunc)
             szParam = TrimString(szParam)
             szTmp = cat(szIns,szParam)
             szParam = cat(szFuncDef,szParam)
-            sel.lnFirst = ln + 12
-            sel.lnLast = ln + 12
+            sel.lnFirst = ln + lnend
+            sel.lnLast = ln + lnend
             setWndSel(hwnd,sel)
             sel.ichFirst = sel.ichFirst + strlen(szParam)
             sel.ichLim = sel.ichFirst
@@ -3669,20 +3664,20 @@ macro FuncHeadCommentEN(hbuf, ln, szFunc, szMyName,newFunc)
             {
                 ln = ln + 1
                 InsBufLine(hbuf, ln+2, "@szTmp@")
-                oldsel.lnFirst = ln + 12
-                oldsel.lnLast = ln + 12        
+                oldsel.lnFirst = ln + lnend
+                oldsel.lnLast = ln + lnend        
             }
             SetBufSelText(hbuf,szParam)
             szIns = "                "
             szFuncDef = ", "
-            oldsel.lnFirst = ln + 14
-            oldsel.lnLast = ln + 14
+            oldsel.lnFirst = ln + (lnend+2)
+            oldsel.lnLast = ln + (lnend+2)
             oldsel.ichFirst = 4
             oldsel.ichLim = 5
             setWndSel(hwnd,oldsel)
         }
     }
-    return ln + 15
+    return ln + lnend + 3
 }
 
 /*****************************************************************************
