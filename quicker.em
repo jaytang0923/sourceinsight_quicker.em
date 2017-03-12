@@ -3547,10 +3547,10 @@ macro FuncHeadCommentEN(hbuf, ln, szFunc, szMyName,newFunc)
         szLine = ""
     }
     InsBufLine(hbuf, ln, "/**")
-    InsBufLine(hbuf, ln+1, " * \@fn      : @szFunc@")
+    InsBufLine(hbuf, ln+1, " * \@fn       @szFunc@")
     InsBufLine(hbuf, ln+2, " *")
     oldln  = ln 
-    szIns = " * \@param[in]         : "
+    szIns = " * \@param[in]          "
     if(newFunc != 1)
     {
         //对于已经存在的函数输出输入参数表
@@ -3567,7 +3567,7 @@ macro FuncHeadCommentEN(hbuf, ln, szFunc, szMyName,newFunc)
             szTmp = cat(szIns,szTmp)
             InsBufLine(hbuf, ln+2, "@szTmp@")
             iIns = 1
-            szIns = "                "
+            szIns = " * \@param[in]        "
             i = i + 1
         }    
         closebuf(hTmpBuf)
@@ -3575,10 +3575,10 @@ macro FuncHeadCommentEN(hbuf, ln, szFunc, szMyName,newFunc)
     if(iIns == 0)
     {       
             ln = ln + 1
-            InsBufLine(hbuf, ln+2, " * \@param[in]          : None")
+            InsBufLine(hbuf, ln+2, " * \@param[in]           None")
     }
-    InsBufLine(hbuf, ln+3, " * \@param[out]        : None")
-    InsBufLine(hbuf, ln+4, " * \@return        : @szRet@")
+    InsBufLine(hbuf, ln+3, " * \@param[out]         None")
+    InsBufLine(hbuf, ln+4, " * \@return         @szRet@")
     InsBufLine(hbuf, ln+5, " * ")
     InsBufLine(hbuf, ln+6, " * ")
     InsbufLIne(hbuf, ln+7, " */");
@@ -3630,7 +3630,7 @@ macro FuncHeadCommentEN(hbuf, ln, szFunc, szMyName,newFunc)
     szContent = Ask("Description")
     DelBufLine(hbuf,oldln + 2)
     setWndSel(hwnd,sel)
-    newln = CommentContent(hbuf,oldln + 6," * \@brief   : ",szContent,0) - 6
+    newln = CommentContent(hbuf,oldln + 6," * \@brief    ",szContent,0) - 6
     ln = ln + newln - oldln
     if ((newFunc == 1) && (strlen(szFunc)>0))
     {
