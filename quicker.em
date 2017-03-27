@@ -31,7 +31,8 @@ macro AutoExpand()
     language = getreg(LANGUAGE)
     if(language != 1)
     {
-        language = 0
+    	/*we change to use ENGLISH at default*/
+        language = 1
     }
     nVer = 0
     nVer = GetVersion()
