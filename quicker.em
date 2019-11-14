@@ -4019,7 +4019,7 @@ macro CreateFunctionDef(hbuf, szName, language)
 	        }
             else if( symbol.Type == "Function" )
             {
-                ln = CreateFuncPrototype(hbuf,ln,"extern",symbol)
+                ln = CreateFuncPrototype(hbuf,ln,"",symbol)
             }
             else if( symbol.Type == "Method" ) 
             {
@@ -4230,7 +4230,7 @@ macro CreateFuncPrototype(hbuf,ln,szType,symbol)
                     //函数参数头结束
                     isLastLine = 1  
                     //去掉最后多余的字符
-        	        szLine = strmid(szLine,0,i+1);
+        	        szLine = strmid(szLine,1,i+1);
                     szLine = cat(szLine,";")
                     break
                 }
