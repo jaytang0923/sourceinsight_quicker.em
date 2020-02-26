@@ -4213,6 +4213,11 @@ macro CreateFuncPrototype(hbuf,ln,szType,symbol)
     szLine = cat("@szType@ ",szLine)
     szNew = cat("@szType@ ",szNew)
     sline = symbol.lnFirst     
+    szRet = GetFirstWord(szNew)
+    if(szRet == "static"){
+    	// ignore static function
+    	return ln
+    }
     while((isLastLine == 0) && (sline < symbol.lnLim))
     {   
         i = 0
