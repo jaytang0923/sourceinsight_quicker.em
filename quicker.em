@@ -1872,7 +1872,9 @@ macro GetFirstWord(szLine)
         }
         nIdx = nIdx + 1
     }
-    return ""
+    //仅仅单个单词,直接返回jay@20191127
+    //return ""
+    return szLine
     
 }
 
@@ -2346,12 +2348,12 @@ macro InsertFileHeaderEN(hbuf, ln,szName,szContent)
     GetFunctionList(hbuf,hnewbuf)
     InsBufLine(hbuf, ln + 0,  "/********************************************************************************")
     InsBufLine(hbuf, ln + 1,  "")
-    InsBufLine(hbuf, ln + 2,  " *************************Copyright (C), @szYear@, KingShiDun Inc.**************************")
+    InsBufLine(hbuf, ln + 2,  " **********************Copyright (C), @szYear@, KingShiDun Inc.**********************")
     InsBufLine(hbuf, ln + 3,  "")
     InsBufLine(hbuf, ln + 4,  " ********************************************************************************")
     sz = GetFileName(GetBufName (hbuf))
-    InsBufLine(hbuf, ln + 5,  " * \@file     	 : @sz@")
-    InsBufLine(hbuf, ln + 6,  " * \@brief   		  : @szContent@")
+    InsBufLine(hbuf, ln + 5,  " * \@file       : @sz@")
+    InsBufLine(hbuf, ln + 6,  " * \@brief      : @szContent@")
     SysTime = GetSysTime(1)
     sz=SysTime.Year
     sz1=SysTime.month
@@ -2372,15 +2374,15 @@ macro InsertFileHeaderEN(hbuf, ln,szName,szContent)
        	{
        		szDay = sz3
        	}
-    InsBufLine(hbuf, ln + 7,  " * \@author       : @szName@")
+    InsBufLine(hbuf, ln + 7,  " * \@author     : @szName@")
   
     /*InsBufLine(hbuf, ln + 8,  "  Created       : @sz@-@szMonth@-@szDay@")
     InsBufLine(hbuf, ln + 9,  "  Last Modified :")*/
     szTmp = " * Description   : "
     nlnDesc = ln
     iLen = strlen (szContent)
-    InsBufLine(hbuf, ln + 8, " * \@version        : 1.0")
-    InsBufLine(hbuf, ln + 9, " * \@date          : @sz@-@szMonth@-@szDay@")
+    InsBufLine(hbuf, ln + 8, " * \@version    : 1.0")
+    InsBufLine(hbuf, ln + 9, " * \@date       : @sz@-@szMonth@-@szDay@")
     InsBufLine(hbuf, ln + 10," * ")
     InsBufLine(hbuf, ln + 11," * ")
     //插入函数列表
@@ -2388,8 +2390,8 @@ macro InsertFileHeaderEN(hbuf, ln,szName,szContent)
     closebuf(hnewbuf)
     */
     InsBufLine(hbuf, ln + 12, " * \@note History:")
-    InsBufLine(hbuf, ln + 13, " * \@note        : @szName@ @sz@-@szMonth@-@szDay@")
-    InsBufLine(hbuf, ln + 14, " * \@note        : ")
+    InsBufLine(hbuf, ln + 13, " * \@note       : @szName@ @sz@-@szMonth@-@szDay@")
+    InsBufLine(hbuf, ln + 14, " * \@note       : ")
     InsBufLine(hbuf, ln + 15, " *   Modification: Created file")
     InsBufLine(hbuf, ln + 16, "")
     InsBufLine(hbuf, ln + 17, "********************************************************************************/")
@@ -3553,16 +3555,16 @@ macro FuncHeadCommentEN(hbuf, ln, szFunc, szMyName,newFunc)
     }
     InsBufLine(hbuf, ln, "/**")
     if(newFunc != 1)
-    	InsBufLine(hbuf, ln+1, " * \@fn       @szLine@")
+    	InsBufLine(hbuf, ln+1, " * \@fn          @szLine@")
     else
     	InsBufLine(hbuf, ln+1, " * ")
-    InsBufLine(hbuf, ln+2, " * \@brief    ")
+    InsBufLine(hbuf, ln+2, " * \@brief       ")
     InsBufLine(hbuf, ln+3, " * ")
     lndesc = 2   		//brfef
     lnparastart = 3   	// 4 -1
     
     oldln  = ln 
-    szIns = " * \@param[in]          "
+    szIns = " * \@param[in]   "
     if(newFunc != 1)
     {
         //对于已经存在的函数输出输入参数表
@@ -3579,7 +3581,7 @@ macro FuncHeadCommentEN(hbuf, ln, szFunc, szMyName,newFunc)
             szTmp = cat(szIns,szTmp)
             InsBufLine(hbuf, ln+lnparastart, "@szTmp@")
             iIns = 1
-            szIns = " * \@param[in]        "
+            szIns = " * \@param[in]   "
             i = i + 1
         }    
         closebuf(hTmpBuf)
@@ -3587,10 +3589,10 @@ macro FuncHeadCommentEN(hbuf, ln, szFunc, szMyName,newFunc)
     if(iIns == 0)
     {       
             ln = ln + 1
-            InsBufLine(hbuf, ln+lnparastart, " * \@param[in]           None")
+            InsBufLine(hbuf, ln+lnparastart, " * \@param[in]   None")
     }
     
-    InsBufLine(hbuf, ln+4, " * \@return         @szRet@")
+    InsBufLine(hbuf, ln+4, " * \@return      @szRet@")
     InsbufLIne(hbuf, ln+5, " */")
     lnreturn = 4
     lnend = 6
@@ -3635,7 +3637,7 @@ macro FuncHeadCommentEN(hbuf, ln, szFunc, szMyName,newFunc)
     szContent = Ask("Description")
     DelBufLine(hbuf,oldln + lndesc)
     setWndSel(hwnd,sel)
-    newln = CommentContent(hbuf,oldln + lndesc," * \@brief    ",szContent,0) - lndesc
+    newln = CommentContent(hbuf,oldln + lndesc," * \@brief       ",szContent,0) - lndesc
     ln = ln + newln - oldln
     if ((newFunc == 1) && (strlen(szFunc)>0))
     {
@@ -3643,7 +3645,7 @@ macro FuncHeadCommentEN(hbuf, ln, szFunc, szMyName,newFunc)
         szRet = Ask("Return type")
         if(strlen(szRet) > 0)
         {
-            PutBufLine(hbuf, ln+lnreturn, " * \@return        : @szRet@")            
+            PutBufLine(hbuf, ln+lnreturn, " * \@return      : @szRet@")            
             PutBufLine(hbuf, ln+lnend, "@szRet@ @szFunc@( # )")
             SetbufIns(hbuf,ln+lnend,strlen(szRet)+strlen(szFunc) + 3)
         }
@@ -3678,7 +3680,7 @@ macro FuncHeadCommentEN(hbuf, ln, szFunc, szMyName,newFunc)
                 oldsel.lnLast = ln + lnend        
             }
             SetBufSelText(hbuf,szParam)
-            szIns = " * \@param[in]          "
+            szIns = " * \@param[in]   "
             szFuncDef = ", "
             oldsel.lnFirst = ln + (lnend+2)
             oldsel.lnLast = ln + (lnend+2)
